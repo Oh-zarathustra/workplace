@@ -1,12 +1,26 @@
+#import the standard packages
+import json
+import argparse
+
 #import the third-party packages
 import numpy as np
 import cv2
 
+# construct the argument parser and parse the arguments
+ap = argparse.ArgumentParser()
+ap.add_argument("-c", "--conf", required=True,
+	help="path to the JSON configuration file")
+args = vars(ap.parse_args())
+
+#load configuration
+conf = json.load(open(args["conf"]))
+
 #capture video using the webcam in laptop 
 cap = cv2.VideoCapture(0)
 
-#use  opencv's haar frontface cascade classifier
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+#use frontface cascade classifier specified by conf.json file
+face_cascade = cv2.CascadeClassifier(
+				conf["frontfaceCascadeClassifier_path"])
 
 while (True):
 	#read the current frame and check 
